@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 @Getter
+//@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class User {
