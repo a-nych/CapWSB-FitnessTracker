@@ -28,4 +28,22 @@ class UserMapper {
                         userDto.email());
     }
 
+    UserIdDto toIdsDto(User user) {
+        return new UserIdDto(
+                user.getId(),
+                user.getEmail()
+        );
+    }
+
+    User toUpdatedEntity(User existingUser, UserUpdateDto updateDto) {
+        User updatedUser = new User(
+                updateDto.firstName() != null ? updateDto.firstName() : existingUser.getFirstName(),
+                updateDto.lastName() != null ? updateDto.lastName() : existingUser.getLastName(),
+                updateDto.birthdate() != null ? updateDto.birthdate() : existingUser.getBirthdate(),
+                updateDto.email() != null ? updateDto.email() : existingUser.getEmail()
+        );
+        // updatedUser.setId(existingUser.getId()); // TODO: fix me
+        return updatedUser;
+    }
+
 }

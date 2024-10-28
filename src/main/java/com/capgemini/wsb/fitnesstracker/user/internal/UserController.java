@@ -1,12 +1,14 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -39,14 +41,52 @@ class UserController {
                 .map(userMapper::toDto);
     }
 
+    @GetMapping("/search")
+    public List<UserIdDto> searchUser(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Integer age) {
+
+        if ((email == null && age == null) || (email != null && age != null)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Exactly one search parameter (email or age) must be provided"
+            );
+        }
+
+        if (email != null) {
+            return userService.searchUsersByPartialEmail(email)
+                    .stream()
+                    .map(userMapper::toIdsDto)
+                    .toList();
+        } else {
+            return userService.searchUsersByAge(age)
+                    .stream()
+                    .map(userMapper::toIdsDto)
+                    .toList();
+        }
+    }
+
     @PostMapping
     public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
+        User newUser = userMapper.toEntity(userDto);
 
-        // Demonstracja how to use @RequestBody
-        System.out.println("User with e-mail: " + userDto.email() + "passed to the request");
+        userService.createUser(newUser);
 
-        // TODO: saveUser with Service and return User
-        return null;
+        return newUser;
+    }
+
+    @PatchMapping("/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserUpdateDto updateDto) {
+        User user = userService.getUser(id).orElseThrow(() -> new UserNotFoundException(id));
+        User updatedUser = userMapper.toUpdatedEntity(user, updateDto);
+
+        return userMapper.toDto(userService.updateUser(updatedUser));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
 }

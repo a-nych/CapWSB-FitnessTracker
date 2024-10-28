@@ -42,4 +42,24 @@ class UserServiceImpl implements UserService, UserProvider {
         return userRepository.findAll();
     }
 
+    @Override
+    public List<User> searchUsersByPartialEmail(String email) {
+        return userRepository.searchByPartialEmail(email);
+    }
+
+    @Override
+    public List<User> searchUsersByAge(Integer age) {
+        return userRepository.searchUsersByAge(age);
+    }
+
+    @Override
+    public void deleteUser(final Long userId) {
+        User user = this.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        userRepository.delete(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
 }
