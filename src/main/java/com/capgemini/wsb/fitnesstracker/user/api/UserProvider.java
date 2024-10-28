@@ -30,4 +30,19 @@ public interface UserProvider {
      */
     List<User> findAllUsers();
 
+    /**
+     * Retrieve users matching a partial email search
+     *
+     * @param email Email to base search on
+     * @return An {@link List} containing matching users
+     */
+    List<User> searchUsersByPartialEmail(String email);
+
+    /**
+     * Retrieve users older than specified age
+     *
+     * @param age Minimum age to search from
+     * @return An {@link List} containing matching users
+     */
+    List<User> searchUsersByAge(Integer age);
 }
