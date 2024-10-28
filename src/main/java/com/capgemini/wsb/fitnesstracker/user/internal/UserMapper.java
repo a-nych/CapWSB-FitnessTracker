@@ -37,7 +37,7 @@ class UserMapper {
     }
 
     public User toUpdatedEntity(User user, UserUpdateDto updateDto) {
-        // Using reflection to avoid exposing User entity fields via Setters, if better performance is a priority then setters in User class should be made and this solution changed - Adam S.
+        // Using reflection to avoid exposing User entity fields via Setters, if better performance is a priority then setters in User class should be made and this solution changed to the one below - Adam S.
         Field[] fields = UserUpdateDto.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -61,4 +61,17 @@ class UserMapper {
         }
         return user;
     }
+
+    /*
+    public User toUpdatedEntity(User user, UserUpdateDto updateDto) {
+    User updatedUser = new User(
+            updateDto.firstName() != null ? updateDto.firstName() : existingUser.getFirstName(),
+            updateDto.lastName() != null ? updateDto.lastName() : existingUser.getLastName(),
+            updateDto.birthdate() != null ? updateDto.birthdate() : existingUser.getBirthdate(),
+            updateDto.email() != null ? updateDto.email() : existingUser.getEmail()
+    );
+    updatedUser.setId(existingUser.getId()); // only possible by adding @setter annotation to User class
+    return updatedUser;
+}
+     */
 }
