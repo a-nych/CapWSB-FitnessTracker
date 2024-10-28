@@ -7,7 +7,7 @@ import com.capgemini.wsb.fitnesstracker.user.api.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +48,8 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
-    public List<User> searchUsersByAge(Integer age) {
-        return userRepository.searchUsersByAge(age);
+    public List<User> searchUsersOlderThan(LocalDate time) {
+        return userRepository.searchUsersOlderThan(time);
     }
 
     @Override
@@ -59,7 +59,7 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(final User user) {
         return userRepository.save(user);
     }
 }
