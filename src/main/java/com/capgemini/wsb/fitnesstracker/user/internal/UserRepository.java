@@ -36,20 +36,17 @@ interface UserRepository extends JpaRepository<User, Long> {
     }
 
     /**
-     * Query users by their age. Returns people older than specified age.
+     * Query users by their age. Returns people older than specified date.
      *
-     * @param age Minimum age to search from
+     * @param time Minimum date to search from
      * @return {@link List} of matching users
      */
-    default List<User> searchUsersByAge(Integer age) {
-        if (age < 0) {
-            throw new IllegalArgumentException("Age must be a positive integer");
+    default List<User> searchUsersOlderThan(LocalDate time) {
+        if (time == null) {
+            throw new IllegalArgumentException("Date must not be null");
         }
-
-        LocalDate currentDate = LocalDate.now();
-
         return findAll().stream()
-                .filter(user -> Period.between(user.getBirthdate(), currentDate).getYears() >= age)
+                .filter(user -> user.getBirthdate().isBefore(time))
                 .toList();
     }
 }

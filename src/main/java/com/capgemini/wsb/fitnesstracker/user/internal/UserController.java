@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,42 +40,44 @@ class UserController {
         return userService.getUser(id)
                 .map(userMapper::toDto);
     }
-
-    @GetMapping("/search")
-    public List<UserIdDto> searchUser(
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) Integer age) {
-
-        if ((email == null && age == null) || (email != null && age != null)) {
+    @GetMapping("/email")
+    public List<UserIdDto> searchUserByEmail(@RequestParam String email) {
+        if (email == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Exactly one search parameter (email or age) must be provided"
+                    "Parameter (email) must be provided"
             );
         }
+        return userService.searchUsersByPartialEmail(email)
+                .stream()
+                .map(userMapper::toIdsDto)
+                .toList();
+    }
 
-        if (email != null) {
-            return userService.searchUsersByPartialEmail(email)
-                    .stream()
-                    .map(userMapper::toIdsDto)
-                    .toList();
-        } else {
-            return userService.searchUsersByAge(age)
-                    .stream()
-                    .map(userMapper::toIdsDto)
-                    .toList();
+    @GetMapping("/older/{time}")
+    public List<UserDto> searchUserOlderThan(@PathVariable LocalDate time) {
+
+        if (time == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Parameter (date yyyy-mm-dd) must be provided"
+            );
         }
+            return userService.searchUsersOlderThan(time)
+                    .stream()
+                    .map(userMapper::toDto)
+                    .toList();
     }
 
     @PostMapping
-    public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public User addUser(@RequestBody UserDto userDto) {
         User newUser = userMapper.toEntity(userDto);
-
         userService.createUser(newUser);
-
         return newUser;
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserUpdateDto updateDto) {
         User user = userService.getUser(id).orElseThrow(() -> new UserNotFoundException(id));
         User updatedUser = userMapper.toUpdatedEntity(user, updateDto);
@@ -88,5 +90,4 @@ class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
-
 }
