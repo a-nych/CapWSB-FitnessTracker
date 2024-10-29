@@ -1,0 +1,440 @@
+{
+	"info": {
+		"_postman_id": "adf31f99-3249-458e-bf18-318efac24996",
+		"name": "FitnessTracker-WSB-Integration-Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39369914"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"An user is returned\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('id');",
+							"    pm.expect(pm.response.json().id).to.be.a('number');",
+							"    pm.expect(pm.response.json()).to.have.property('firstName');",
+							"    pm.expect(pm.response.json().firstName).to.be.a('string');",
+							"    pm.expect(pm.response.json()).to.have.property('lastName');",
+							"    pm.expect(pm.response.json().lastName).to.be.a('string');",
+							"    pm.expect(pm.response.json()).to.have.property('birthdate');",
+							"    pm.expect(pm.response.json().birthdate).to.be.a('string');",
+							"    pm.expect(pm.response.json()).to.have.property('email');",
+							"    pm.expect(pm.response.json().email).to.be.a('string');",
+							"",
+							"})",
+							"",
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.expect(pm.response.to.have.status(201));",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the schema of the returned user object\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id').that.is.a('number');",
+							"    pm.expect(responseData).to.have.property('firstName').that.is.a('string');",
+							"    pm.expect(responseData).to.have.property('lastName').that.is.a('string');",
+							"    pm.expect(responseData).to.have.property('birthdate').that.is.a('string');",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Returned user object has all the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('birthdate');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Birthdate is in the format 'YYYY-MM-DD'\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.birthdate).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+							"});",
+							"",
+							"pm.test(\"Set variables\", function () {",
+							"    pm.collectionVariables.set('id', pm.response.json().id);",
+							"    pm.collectionVariables.set('initialFirstName', pm.response.json().firstName);",
+							"    pm.collectionVariables.set('initialLastName', pm.response.json().lastName);",
+							"    pm.collectionVariables.set('initialEmail', pm.response.json().email);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"birthdate\": \"2000-01-01\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{usersUrl}}",
+					"host": [
+						"{{usersUrl}}"
+					]
+				},
+				"description": "This endpoint makes an HTTP POST request to {{usersUrl}} to create a new user. The request body should be in raw JSON format and include the user's first name, last name, birthdate, and email.\n\n### Request Body\n\n- `firstName` (string, required): The first name of the user.\n    \n- `lastName` (string, required): The last name of the user.\n    \n- `birthdate` (string, required): The birthdate of the user in the format 'YYYY-MM-DD'.\n    \n- `email` (string, required): The email address of the user.\n    \n\n### Response\n\nThe response of this request is documented as a JSON schema."
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Updated response time test to 300ms",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Response time is less than 300ms",
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"// Validate the response schema for the presence of properties",
+							"pm.test(\"Validate the response schema for the presence of properties\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('Id');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"});",
+							"",
+							"pm.test(\"Verify that the response data matches the initial values stored in collection variables for firstName, lastName, and email\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    ",
+							"    pm.expect(responseData.firstName).to.equal(pm.collectionVariables.get(\"initialFirstName\"));",
+							"    pm.expect(responseData.lastName).to.equal(pm.collectionVariables.get(\"initialLastName\"));",
+							"    pm.expect(responseData.email).to.equal(pm.collectionVariables.get(\"initialEmail\"));",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}/{{id}}",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				},
+				"description": "### Get User Details\n\nThis endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"Id\": 0,\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"birthdate\": \"\",\n    \"email\": \"\"\n}\n\n ```\n\n#### Description\n\nThis request uses the saved `token` collection variable to access a secret 'name' stored against that token. The `token` collection variable is used as a query parameter to fetch the user details based on the provided `id`. A test has been added to verify that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Patch user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A patched user is returned\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('firstName');",
+							"    pm.expect(pm.response.json().firstName).to.be.a('string');",
+							"    pm.expect(pm.response.json()).to.have.property('lastName');",
+							"    pm.expect(pm.response.json().lastName).to.be.a('string');",
+							"    pm.expect(pm.response.json()).to.have.property('email');",
+							"    pm.expect(pm.response.json().email).to.be.a('string');",
+							"    pm.collectionVariables.set('patchedFirstName', pm.response.json().firstName);",
+							"    pm.collectionVariables.set('patchedLastName', pm.response.json().lastName);",
+							"    pm.collectionVariables.set('patchedEmail', pm.response.json().email);",
+							"})",
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is in an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response schema for 'firstName', 'lastName', and 'email' properties\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('firstName').that.is.a('string');",
+							"    pm.expect(responseData).to.have.property('lastName').that.is.a('string');",
+							"    pm.expect(responseData).to.have.property('email').that.is.a('string');",
+							"});",
+							"",
+							"",
+							"pm.test(\"FirstName, lastName, and email properties are of type string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.firstName).to.be.a('string');",
+							"    pm.expect(responseData.lastName).to.be.a('string');",
+							"    pm.expect(responseData.email).to.be.a('string');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Check that the 'firstName' is correctly returned from the request\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.firstName).to.exist.and.to.be.a('string');",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{usersUrl}}/{{id}}",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				},
+				"description": "### Update User Information\n\nThis endpoint allows updating user information by making an HTTP PUT request to `{{usersUrl}}/{{id}}`.\n\n#### Request Body\n\nThe request body should be in raw format with the following payload:\n\n``` json\n{\n  \"firstName\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"email\": \"{{$randomEmail}}\"\n}\n\n ```\n\n#### Response\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"Id\": {\n      \"type\": \"integer\"\n    },\n    \"firstName\": {\n      \"type\": \"string\"\n    },\n    \"lastName\": {\n      \"type\": \"string\"\n    },\n    \"birthdate\": {\n      \"type\": \"string\"\n    },\n    \"email\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```\n\n#### Response Status\n\n- 200 - OK\n    \n\nThe request uses the saved `token` collection variable to access a secret 'name' stored against that token. The `token` collection variable is used as a query param to fetch the name generated for that token, with a test added to check that a name is correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patched User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A patched user is returned\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('firstName');",
+							"    pm.expect(pm.response.json().firstName).to.be.a('string');",
+							"    pm.expect(pm.response.json().firstName).to.eql(pm.collectionVariables.get('patchedFirstName'));",
+							"    pm.expect(pm.response.json()).to.have.property('lastName');",
+							"    pm.expect(pm.response.json().lastName).to.be.a('string');",
+							"    pm.expect(pm.response.json().lastName).to.eql(pm.collectionVariables.get('patchedLastName'));",
+							"    pm.expect(pm.response.json()).to.have.property('email');",
+							"    pm.expect(pm.response.json().email).to.be.a('string');",
+							"    pm.expect(pm.response.json().email).to.eql(pm.collectionVariables.get('patchedEmail'));",
+							"});",
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - firstName, lastName, and email\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"});",
+							"",
+							"",
+							"pm.test(\"First name, last name, and email are non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");",
+							"    pm.expect(responseData.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");",
+							"    pm.expect(responseData.email).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Email should not be empty\");",
+							"});",
+							"",
+							"pm.test(\"Validate the response schema against a predefined schema\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.have.property('Id');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('birthdate');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{usersUrl}}/{{id}}",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				},
+				"description": "### Retrieve User Details\n\nThis API endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"Id\": 0, \"firstName\": \"\", \"lastName\": \"\", \"birthdate\": \"\", \"email\": \"\"}\n    \n\nThis request utilizes the `token` collection variable as a query parameter to fetch the user details associated with that token. A test has been added to ensure that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns 204 No Content status\", () => {",
+							"    pm.response.to.have.status(204)",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}/{{id}}",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				},
+				"description": "This endpoint sends an HTTP DELETE request to the specified user's URL with the user ID in the URL path.\n\n### Response\n\nThe response of this request is a JSON schema representing the data structure of the response."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		},
+		{
+			"key": "usersUrl",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "initialFirstName",
+			"value": ""
+		},
+		{
+			"key": "initialLastName",
+			"value": ""
+		},
+		{
+			"key": "initialEmail",
+			"value": ""
+		},
+		{
+			"key": "patchedFirstName",
+			"value": ""
+		},
+		{
+			"key": "patchedLastName",
+			"value": ""
+		},
+		{
+			"key": "patchedEmail",
+			"value": ""
+		}
+	]
+}
