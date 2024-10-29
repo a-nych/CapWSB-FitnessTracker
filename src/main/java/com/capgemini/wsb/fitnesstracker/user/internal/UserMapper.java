@@ -2,6 +2,7 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import org.springframework.stereotype.Component;
+
 import java.lang.reflect.Field;
 
 @Component
@@ -9,10 +10,10 @@ class UserMapper {
 
     UserDto toDto(User user) {
         return new UserDto(user.getId(),
-                           user.getFirstName(),
-                           user.getLastName(),
-                           user.getBirthdate(),
-                           user.getEmail());
+                user.getFirstName(),
+                user.getLastName(),
+                user.getBirthdate(),
+                user.getEmail());
     }
 
     UserSimpleDto toSimpleDto(User user) {
@@ -23,10 +24,10 @@ class UserMapper {
 
     User toEntity(UserDto userDto) {
         return new User(
-                        userDto.firstName(),
-                        userDto.lastName(),
-                        userDto.birthdate(),
-                        userDto.email());
+                userDto.firstName(),
+                userDto.lastName(),
+                userDto.birthdate(),
+                userDto.email());
     }
 
     UserIdDto toIdsDto(User user) {
@@ -48,14 +49,11 @@ class UserMapper {
                     userField.setAccessible(true);
                     userField.set(user, value);
                 }
-            }
-            catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 throw new RuntimeException("Failed to update field: " + field.getName(), e);
-            }
-            catch (NoSuchFieldException e) {
+            } catch (NoSuchFieldException e) {
                 throw new RuntimeException("Field not found in User class: " + field.getName(), e);
-            }
-            finally {
+            } finally {
                 field.setAccessible(false);
             }
         }
