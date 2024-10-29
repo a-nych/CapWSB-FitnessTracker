@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ class UserController {
         return userService.getUser(id)
                 .map(userMapper::toDto);
     }
+
     @GetMapping("/email")
     public List<UserIdDto> searchUserByEmail(@RequestParam String email) {
         if (email == null) {
@@ -63,10 +65,10 @@ class UserController {
                     "Parameter (date yyyy-mm-dd) must be provided"
             );
         }
-            return userService.searchUsersOlderThan(time)
-                    .stream()
-                    .map(userMapper::toDto)
-                    .toList();
+        return userService.searchUsersOlderThan(time)
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 
     @PostMapping
