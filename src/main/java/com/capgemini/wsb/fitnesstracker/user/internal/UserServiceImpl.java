@@ -60,7 +60,8 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
-    public User updateUser(final User user) {
-        return userRepository.save(user);
+    public User updateUser(final User updatedUser) {
+        log.info("Updating User {}", updatedUser);
+        return userRepository.save(updatedUser);
     }
 }

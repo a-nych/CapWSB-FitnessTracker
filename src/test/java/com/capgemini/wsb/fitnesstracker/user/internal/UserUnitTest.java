@@ -9,15 +9,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,6 +40,7 @@ class UserUnitTest {
     private static final String LAST_NAME = "Doe";
     private static final LocalDate BIRTHDATE = LocalDate.of(1990, 1, 1);
     private static final String EMAIL = "john.doe@example.com";
+    private static final String PARTIAL_EMAIL = "john";
 
     @Nested
     class UserServiceImplTest {
@@ -120,7 +129,7 @@ class UserUnitTest {
         @DisplayName("Should search users by partial email")
         void shouldSearchUsersByPartialEmail() {
             // given
-            List<User> users = Arrays.asList(testUser);
+            List<User> users = Collections.singletonList(testUser);
             when(userRepository.searchByPartialEmail("john")).thenReturn(users);
 
             // when
@@ -134,7 +143,7 @@ class UserUnitTest {
         @DisplayName("Should search users older than date")
         void shouldSearchUsersOlderThan() {
             // given
-            List<User> users = Arrays.asList(testUser);
+            List<User> users = Collections.singletonList(testUser);
             LocalDate searchDate = LocalDate.of(2000, 1, 1);
             when(userRepository.searchUsersOlderThan(searchDate)).thenReturn(users);
 
@@ -167,6 +176,21 @@ class UserUnitTest {
             // when/then
             assertThatThrownBy(() -> userService.deleteUser(USER_ID))
                     .isInstanceOf(UserNotFoundException.class);
+        }
+
+        @Test
+        @DisplayName("Should update user successfully")
+        void shouldUpdateUser() {
+            // given
+            when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+            // when
+            User result = userService.updateUser(testUser);
+
+            // then
+            assertThat(result).isNotNull();
+            verify(userRepository).save(testUser);
+
         }
     }
 
@@ -373,6 +397,24 @@ class UserUnitTest {
         }
 
         @Test
+        @DisplayName("Should find user by email successfully")
+        void shouldFindUserByEmailSuccessfully() {
+            // given
+            UserIdDto userIdDto = new UserIdDto(null, FIRST_NAME);
+            when(userService.searchUsersByPartialEmail(PARTIAL_EMAIL)).thenReturn(List.of(testUser));
+            when(userMapper.toIdsDto(any(User.class))).thenReturn(userIdDto);
+
+            // when
+            List<UserIdDto> result = userController.searchUserByEmail(PARTIAL_EMAIL);
+
+            // then
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0)).isEqualTo(userIdDto);
+            verify(userService).searchUsersByPartialEmail(PARTIAL_EMAIL);
+            verify(userMapper).toIdsDto(testUser);
+        }
+
+        @Test
         @DisplayName("Should throw exception when searching users with null email")
         void shouldThrowException_whenSearchingWithNullEmail() {
             // when/then
@@ -382,7 +424,25 @@ class UserUnitTest {
         }
 
         @Test
-        @DisplayName("Should throw exception when searching users with null date")
+        @DisplayName("Should find users older than specified date successfully")
+        void shouldFindUsersOlderThanSpecifiedDateSuccessfully() {
+            // given
+            LocalDate testDate = LocalDate.of(2000, 1, 1);
+            when(userService.searchUsersOlderThan(testDate)).thenReturn(List.of(testUser));
+            when(userMapper.toDto(any(User.class))).thenReturn(testUserDto);
+
+            // when
+            List<UserDto> result = userController.searchUserOlderThan(testDate);
+
+            // then
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0)).isEqualTo(testUserDto);
+            verify(userService).searchUsersOlderThan(testDate);
+            verify(userMapper).toDto(testUser);
+        }
+
+        @Test
+        @DisplayName("Should throw exception when searching users oldar than null date")
         void shouldThrowException_whenSearchingWithNullDate() {
             // when/then
             assertThatThrownBy(() -> userController.searchUserOlderThan(null))
