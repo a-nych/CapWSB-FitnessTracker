@@ -8,4 +8,13 @@ public interface UserService {
 
     User createUser(User user);
 
+    /**
+     * Deletes a user based on their ID.
+     *
+     * @param userId id of the user to be deleted
+     * @throws UserNotFoundException if user is not found
+     */
+    void deleteUser(Long userId);
+
+    User updateUser(User user);
 }
