@@ -401,11 +401,11 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "https://postman-integration-testing.glitch.me/"
+			"value": "http://localhost:8090"
 		},
 		{
 			"key": "usersUrl",
-			"value": "",
+			"value": "{{baseUrl}}/v1/users",
 			"type": "string"
 		},
 		{
