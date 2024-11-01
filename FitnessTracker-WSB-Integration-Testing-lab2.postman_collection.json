@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a96407a8-156e-480f-8d37-a1ef05fd9807",
-		"name": "FitnessTracker-WSB-Integration-Testing-lab2",
+		"_postman_id": "adf31f99-3249-458e-bf18-318efac24996",
+		"name": "FitnessTracker-WSB-Integration-Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24643759"
+		"_exporter_id": "39369914"
 	},
 	"item": [
 		{
@@ -172,145 +172,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Users",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Updated response time test to 300ms",
-							"pm.test(\"Response status code is 200\", function () {",
-							"  pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Response time is less than 300ms",
-							"pm.test(\"Response time is less than 300ms\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(300);",
-							"});",
-							"",
-							"// Request is successfull",
-							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{usersUrl}}",
-					"host": [
-						"{{usersUrl}}"
-					]
-				},
-				"description": "### Get User Details\n\nThis endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"Id\": 0,\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"birthdate\": \"\",\n    \"email\": \"\"\n}\n\n ```\n\n#### Description\n\nThis request uses the saved `token` collection variable to access a secret 'name' stored against that token. The `token` collection variable is used as a query parameter to fetch the user details based on the provided `id`. A test has been added to verify that the user details are correctly returned."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Users Older Than",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Updated response time test to 300ms",
-							"pm.test(\"Response status code is 200\", function () {",
-							"  pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Response time is less than 300ms",
-							"pm.test(\"Response time is less than 300ms\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(300);",
-							"});",
-							"",
-							"// Request is successfull",
-							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{usersUrl}}/older/{{time}}",
-					"host": [
-						"{{usersUrl}}"
-					],
-					"path": [
-						"older",
-						"{{time}}"
-					]
-				},
-				"description": "### Get User Details\n\nThis endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"Id\": 0,\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"birthdate\": \"\",\n    \"email\": \"\"\n}\n\n ```\n\n#### Description\n\nThis request uses the saved `token` collection variable to access a secret 'name' stored against that token. The `token` collection variable is used as a query parameter to fetch the user details based on the provided `id`. A test has been added to verify that the user details are correctly returned."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Users By Email",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Updated response time test to 300ms",
-							"pm.test(\"Response status code is 200\", function () {",
-							"  pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Response time is less than 300ms",
-							"pm.test(\"Response time is less than 300ms\", function () {",
-							"  pm.expect(pm.response.responseTime).to.be.below(300);",
-							"});",
-							"",
-							"// Request is successfull",
-							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{usersUrl}}/email?email=oliv",
-					"host": [
-						"{{usersUrl}}"
-					],
-					"path": [
-						"email"
-					],
-					"query": [
-						{
-							"key": "email",
-							"value": "oliv"
-						}
-					]
-				},
-				"description": "### Get User Details\n\nThis endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"Id\": 0,\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"birthdate\": \"\",\n    \"email\": \"\"\n}\n\n ```\n\n#### Description\n\nThis request uses the saved `token` collection variable to access a secret 'name' stored against that token. The `token` collection variable is used as a query parameter to fetch the user details based on the provided `id`. A test has been added to verify that the user details are correctly returned."
-			},
-			"response": []
-		},
-		{
-			"name": "Update User",
+			"name": "Patch user",
 			"event": [
 				{
 					"listen": "test",
@@ -397,7 +259,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Updated User",
+			"name": "Get Patched User",
 			"event": [
 				{
 					"listen": "test",
@@ -484,7 +346,241 @@
 			"response": []
 		},
 		{
-			"name": "Delete user",
+			"name": "Get User By Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array and has the required fields - Id and email\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    pm.expect(responseData[0].id).to.exist;",
+							"    pm.expect(responseData[0].email).to.exist;",
+							"});",
+							"",
+							"pm.test(\"Correct user is found\", function () {",
+							"     pm.expect(pm.response.responseTime).to.be.below(200);",
+							"",
+							"     var responseData = pm.response.json();",
+							"     pm.expect(responseData).to.be.an('array');",
+							"",
+							"    pm.expect(responseData[0].id).to.be.eql(pm.collectionVariables.get('id'));",
+							"    pm.expect(responseData[0].email).to.be.eql(pm.collectionVariables.get('patchedEmail'));",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}/email?email={{patchedEmail}}",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"email"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{patchedEmail}}"
+						}
+					]
+				},
+				"description": "### Retrieve User Details\n\nThis API endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"Id\": 0, \"firstName\": \"\", \"lastName\": \"\", \"birthdate\": \"\", \"email\": \"\"}\n    \n\nThis request utilizes the `token` collection variable as a query parameter to fetch the user details associated with that token. A test has been added to ensure that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users (Simple)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array and has the required fields - Id, firstName and LastName\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach((user) => {",
+							"        pm.expect(user.Id).to.be.a('number');",
+							"        pm.expect(user.firstName).to.be.a('string');",
+							"        pm.expect(user.lastName).to.be.a('string');",
+							"    })",
+							"});",
+							"",
+							"pm.test(\"Only Id, firstName, and lastName are returned with no other attribute\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    responseData.forEach((user) => {",
+							"        const userKeys = Object.keys(user);",
+							"        pm.expect(userKeys).to.eql(['Id', 'firstName', 'lastName']);",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}/simple",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"simple"
+					]
+				},
+				"description": "### Retrieve User Details\n\nThis API endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"Id\": 0, \"firstName\": \"\", \"lastName\": \"\", \"birthdate\": \"\", \"email\": \"\"}\n    \n\nThis request utilizes the `token` collection variable as a query parameter to fetch the user details associated with that token. A test has been added to ensure that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array and has the required fields - Id, firstName, lastName, birthdate and email\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach((user) => {",
+							"        pm.expect(user.Id).to.be.a('number');",
+							"        pm.expect(user.firstName).to.be.a('string');",
+							"        pm.expect(user.lastName).to.be.a('string');",
+							"        pm.expect(user.birthdate).to.be.a('string');",
+							"        pm.expect(user.email).to.be.a('string');",
+							"    })",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}",
+					"host": [
+						"{{usersUrl}}"
+					]
+				},
+				"description": "### Retrieve User Details\n\nThis API endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"Id\": 0, \"firstName\": \"\", \"lastName\": \"\", \"birthdate\": \"\", \"email\": \"\"}\n    \n\nThis request utilizes the `token` collection variable as a query parameter to fetch the user details associated with that token. A test has been added to ensure that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users Older Than",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array and has the required fields - Id, firstName, lastName, birthdate and email\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach((user) => {",
+							"        pm.expect(user.Id).to.be.a('number');",
+							"        pm.expect(user.firstName).to.be.a('string');",
+							"        pm.expect(user.lastName).to.be.a('string');",
+							"        pm.expect(user.birthdate).to.be.a('string');",
+							"        pm.expect(user.email).to.be.a('string');",
+							"    })",
+							"});",
+							"",
+							"pm.test(\"Users returned in the response are older than 1994-09-19\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    responseData.forEach((user) => {",
+							"        const userBirthdate = new Date(user.birthdate);",
+							"        const cutoffDate = new Date('1994-09-19');",
+							"        pm.expect(userBirthdate.getTime()).to.be.lessThan(cutoffDate.getTime());",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{usersUrl}}/older/1994-09-19",
+					"host": [
+						"{{usersUrl}}"
+					],
+					"path": [
+						"older",
+						"1994-09-19"
+					]
+				},
+				"description": "### Retrieve User Details\n\nThis API endpoint makes an HTTP GET request to retrieve user details based on the provided `id`.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{usersUrl}}/{{id}}`\n    \n- Headers:\n    \n    - Authorization: Bearer {{token}}\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"Id\": 0, \"firstName\": \"\", \"lastName\": \"\", \"birthdate\": \"\", \"email\": \"\"}\n    \n\nThis request utilizes the `token` collection variable as a query parameter to fetch the user details associated with that token. A test has been added to ensure that the user details are correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister",
 			"event": [
 				{
 					"listen": "test",
@@ -539,28 +635,28 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "https://postman-integration-testing.glitch.me/"
+			"value": "http://localhost:8090"
 		},
 		{
 			"key": "usersUrl",
-			"value": "localhost:8090/v1/users",
+			"value": "{{baseUrl}}/v1/users",
 			"type": "string"
 		},
 		{
 			"key": "id",
-			"value": "1"
+			"value": ""
 		},
 		{
 			"key": "initialFirstName",
-			"value": "Emma"
+			"value": ""
 		},
 		{
 			"key": "initialLastName",
-			"value": "Johnson"
+			"value": ""
 		},
 		{
 			"key": "initialEmail",
-			"value": "Emma.Johnson@domain.com"
+			"value": ""
 		},
 		{
 			"key": "patchedFirstName",
@@ -573,11 +669,6 @@
 		{
 			"key": "patchedEmail",
 			"value": ""
-		},
-		{
-			"key": "time",
-			"value": "1996-11-01",
-			"type": "string"
 		}
 	]
 }
