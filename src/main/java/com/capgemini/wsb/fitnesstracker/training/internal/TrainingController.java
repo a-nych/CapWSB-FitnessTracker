@@ -83,4 +83,10 @@ class TrainingController {
         Training updatedTraining = trainingMapper.toUpdatedEntity(existingTraining, trainingDto);
         return trainingMapper.toDto(trainingService.updateTraining(updatedTraining));
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTraining(@PathVariable Long id) {
+        trainingService.deleteTraining(id);
+    }
 }

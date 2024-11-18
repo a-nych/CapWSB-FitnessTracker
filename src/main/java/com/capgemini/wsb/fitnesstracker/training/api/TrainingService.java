@@ -22,4 +22,6 @@ public interface TrainingService {
      * @throws TrainingNotFoundException if training is not found
      */
     Training updateTraining(Training training);
+
+    void deleteTraining(Long userId);
 }

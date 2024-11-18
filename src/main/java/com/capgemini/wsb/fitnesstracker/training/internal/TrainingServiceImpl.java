@@ -4,6 +4,7 @@ import com.capgemini.wsb.fitnesstracker.training.api.Training;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingNotFoundException;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingService;
+import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +76,11 @@ class TrainingServiceImpl implements TrainingService, TrainingProvider {
             throw new TrainingNotFoundException(training.getId());
         }
         return trainingRepository.save(training);
+    }
+
+    @Override
+    public void deleteTraining(final Long trainingId) {
+        Training training = this.getTraining(trainingId).orElseThrow(() -> new TrainingNotFoundException(trainingId));
+        trainingRepository.delete(training);
     }
 }
