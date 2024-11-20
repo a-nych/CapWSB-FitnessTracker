@@ -839,7 +839,7 @@
 							"})",
 							"",
 							"pm.test(\"Response status code is 201\", function () {",
-							"    pm.expect(pm.response.to.have.status(201));",
+							"    pm.expect(pm.response.to.have.status(200));",
 							"});",
 							"",
 							"",

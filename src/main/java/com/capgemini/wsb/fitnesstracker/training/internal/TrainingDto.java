@@ -1,6 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-import com.capgemini.wsb.fitnesstracker.user.internal.UserDetailsDto;
+import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
@@ -23,5 +23,5 @@ public class TrainingDto {
     private ActivityType activityType;
     private double distance;
     private double averageSpeed;
-    private UserDetailsDto user;
+    private User user;
 }
