@@ -76,11 +76,12 @@ class TrainingController {
     @PutMapping("/{trainingId}")
     public TrainingDto updateTraining(
             @PathVariable Long trainingId,
-            @RequestBody TrainingCreateDto trainingDto) {
+            @RequestBody TrainingUpdateDto updateDto) {
         Training existingTraining = trainingService.getTraining(trainingId)
                 .orElseThrow(() -> new TrainingNotFoundException(trainingId));
 
-        Training updatedTraining = trainingMapper.toUpdatedEntity(existingTraining, trainingDto);
+        Training updatedTraining = trainingMapper.toUpdatedEntity(existingTraining, updateDto);
+        updatedTraining.setId(trainingId);
         return trainingMapper.toDto(trainingService.updateTraining(updatedTraining));
     }
 

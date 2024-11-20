@@ -13,7 +13,6 @@ import java.util.Date;
 public class TrainingDto {
     @Nullable
     private Long id;
-    private Long userId;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'+00:00'", timezone = "UTC")
     private Date startTime;

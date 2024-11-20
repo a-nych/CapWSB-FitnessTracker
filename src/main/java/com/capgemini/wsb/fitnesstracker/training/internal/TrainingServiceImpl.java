@@ -1,10 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-import com.capgemini.wsb.fitnesstracker.training.api.Training;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingNotFoundException;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingService;
-import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.training.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import lombok.RequiredArgsConstructor;
@@ -49,11 +45,10 @@ class TrainingServiceImpl implements TrainingService, TrainingProvider {
     @Override
     public List<Training> findTrainingsByActivityType(String activityType) {
         try {
-            ActivityType type = ActivityType.valueOf(activityType);
+            ActivityType type = ActivityType.valueOf(activityType.toUpperCase());
             return trainingRepository.findByActivityType(type);
         } catch (IllegalArgumentException e) {
-            log.warn("Invalid activity type: {}", activityType);
-            return List.of();
+            throw new InvalidActivityTypeException(activityType);
         }
     }
 
