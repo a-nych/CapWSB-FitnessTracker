@@ -1,6 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
+import lombok.Getter;
+
 // TODO : JavaDoc
+@Getter
 public enum ActivityType {
 
     RUNNING("Running"),
@@ -13,10 +16,6 @@ public enum ActivityType {
 
     ActivityType(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
 }
