@@ -25,4 +25,4 @@ spring:
             required: true
           ssl:
             enable: true
-    test-connection: true
+   # test-connection: true
