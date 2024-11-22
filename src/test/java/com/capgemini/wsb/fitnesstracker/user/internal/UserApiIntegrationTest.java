@@ -136,7 +136,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         String USER_EMAIL = "mike.scott@domain.com";
 
         String creationRequest = """
-                                                 
+                
                 {
                 "firstName": "%s",
                 "lastName": "%s",
@@ -176,7 +176,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         String USER_EMAIL = "mike.scott@domain.com";
 
         String updateRequest = """
-                                              
+                
                 {
                 "firstName": "%s",
                 "lastName": "%s",

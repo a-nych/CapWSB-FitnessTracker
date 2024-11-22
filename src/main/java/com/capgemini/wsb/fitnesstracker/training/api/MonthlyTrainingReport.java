@@ -1,9 +1,11 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 

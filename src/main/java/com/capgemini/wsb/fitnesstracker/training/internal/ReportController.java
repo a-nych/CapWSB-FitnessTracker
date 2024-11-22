@@ -25,7 +25,7 @@ public class ReportController {
 
     @PostMapping("/sendMonthlyReports")
     public ResponseEntity<String> sendMonthlyReports() {
-        LocalDate lastMonth =  LocalDate.now().minusMonths(1);
+        LocalDate lastMonth = LocalDate.now().minusMonths(1);
         List<MonthlyTrainingReport> reports = trainingReportService.generateMonthlyReport(YearMonth.of(lastMonth.getYear(), lastMonth.getMonth()));
 
         for (MonthlyTrainingReport report : reports) {

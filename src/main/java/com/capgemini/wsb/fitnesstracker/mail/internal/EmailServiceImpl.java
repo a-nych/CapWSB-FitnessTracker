@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendMonthlyReport(String recipientEmail, MonthlyTrainingReport report) {
         SimpleMailMessage message = new SimpleMailMessage();
         ArrayList<Optional<Training>> trainings = new ArrayList<>();
-        for(Long trainingId : report.getTrainings()){
+        for (Long trainingId : report.getTrainings()) {
             trainings.add(TrainingService.getTraining(trainingId));
         }
         message.setTo(recipientEmail);

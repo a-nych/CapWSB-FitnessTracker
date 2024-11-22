@@ -75,7 +75,8 @@ class TrainingApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$[0].distance").value((training1.getDistance())))
                 .andExpect(jsonPath("$[0].averageSpeed").value(training1.getAverageSpeed()))
 
-                .andExpect(jsonPath("$[1]").doesNotExist());;
+                .andExpect(jsonPath("$[1]").doesNotExist());
+        ;
     }
 
     @Test

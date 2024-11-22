@@ -5,38 +5,24 @@ import com.capgemini.wsb.fitnesstracker.training.api.Training;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingNotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
+import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.server.ResponseStatusException;
-import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,7 +62,7 @@ class TrainingUnitTest {
         @Test
         void shouldMapTrainingToDto() {
             Training training = new Training(
-                    new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com"),
+                    new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com"),
                     new Date(),
                     new Date(),
                     ActivityType.RUNNING,
@@ -103,7 +89,7 @@ class TrainingUnitTest {
             dto.setDistance(15.0);
             dto.setAverageSpeed(7.5);
 
-            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             when(userProvider.getUser(1L)).thenReturn(Optional.of(user));
 
             Training training = trainingMapper.toEntity(dto);
@@ -116,8 +102,8 @@ class TrainingUnitTest {
         @Test
         void shouldUpdateEntityWithNewValues() {
 
-            User existingUser = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
-            User updatedUser = new User("Jane", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User existingUser = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
+            User updatedUser = new User("Jane", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
 
             Training existingTraining = new Training(
                     existingUser,
@@ -153,7 +139,7 @@ class TrainingUnitTest {
         @Test
         void shouldRetainExistingValuesIfUpdateDtoIsNull() {
 
-            User existingUser = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User existingUser = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
 
             Training existingTraining = new Training(
                     existingUser,
@@ -182,7 +168,7 @@ class TrainingUnitTest {
         void shouldThrowExceptionWhenUserIdIsInvalid() {
 
             Training existingTraining = new Training(
-                    new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com"),
+                    new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com"),
                     new Date(),
                     new Date(),
                     ActivityType.RUNNING,
@@ -225,7 +211,7 @@ class TrainingUnitTest {
         void shouldFindAllTrainings() {
             List<Training> trainings = new ArrayList<>();
             trainings.add(new Training(
-                    new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com"),
+                    new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com"),
                     new Date(),
                     new Date(),
                     ActivityType.RUNNING,
@@ -252,7 +238,7 @@ class TrainingUnitTest {
         void shouldReturnTrainingWhenFound() {
 
             Long trainingId = 1L;
-            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             Training training = new Training(user, null, null, null, 0.0, 0.0);
             training.setId(trainingId);
 
@@ -276,10 +262,11 @@ class TrainingUnitTest {
             assertThat(result).isEmpty();
             verify(trainingRepository, times(1)).findById(trainingId);
         }
+
         @Test
         void shouldFindTrainingsByUserId() {
             Long userId = 1L;
-            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User user = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             Training training = new Training(user, null, null, null, 0.0, 0.0);
 
             when(userProvider.getUser(userId)).thenReturn(Optional.of(user));
@@ -468,7 +455,7 @@ class TrainingUnitTest {
         @Test
         void shouldReturnTrainingsForUser() throws Exception {
             Long userId = 1L;
-            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             Training training = new Training(
                     User,
                     new Date(1000000),
@@ -496,7 +483,7 @@ class TrainingUnitTest {
             String dateStr = "2024-01-01";
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date date = format.parse(dateStr);
-            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             Training training = new Training(
                     User,
                     new Date(1000000),
@@ -530,7 +517,7 @@ class TrainingUnitTest {
         @Test
         void shouldReturnTrainingsByActivityType() throws Exception {
             String activityType = "RUNNING";
-            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1) , "john.doe@example.com");
+            User User = new User("John", "Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com");
             Training training = new Training(
                     User,
                     new Date(1000000),

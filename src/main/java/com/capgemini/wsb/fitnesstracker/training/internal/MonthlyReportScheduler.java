@@ -22,7 +22,7 @@ public class MonthlyReportScheduler {
 
     @Scheduled(cron = "0 0 0 1 * ?")  // Run at midnight on the first day of each month
     public void sendMonthlyReports() {
-        LocalDate lastMonth =  LocalDate.now().minusMonths(1);
+        LocalDate lastMonth = LocalDate.now().minusMonths(1);
         List<MonthlyTrainingReport> reports = trainingReportService.generateMonthlyReport(YearMonth.of(lastMonth.getYear(), lastMonth.getMonth()));
 
         for (MonthlyTrainingReport report : reports) {

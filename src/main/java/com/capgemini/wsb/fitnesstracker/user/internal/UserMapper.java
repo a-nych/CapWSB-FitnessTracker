@@ -3,8 +3,6 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-
 @Component
 class UserMapper {
 
@@ -61,14 +59,14 @@ class UserMapper {
 */
 
     public User toUpdatedEntity(User user, UserUpdateDto updateDto) {
-    User updatedUser = new User(
-            updateDto.firstName() != null ? updateDto.firstName() : user.getFirstName(),
-            updateDto.lastName() != null ? updateDto.lastName() : user.getLastName(),
-            updateDto.birthdate() != null ? updateDto.birthdate() : user.getBirthdate(),
-            updateDto.email() != null ? updateDto.email() : user.getEmail()
-    );
-    updatedUser.setId(user.getId());
-    return updatedUser;
-}
+        User updatedUser = new User(
+                updateDto.firstName() != null ? updateDto.firstName() : user.getFirstName(),
+                updateDto.lastName() != null ? updateDto.lastName() : user.getLastName(),
+                updateDto.birthdate() != null ? updateDto.birthdate() : user.getBirthdate(),
+                updateDto.email() != null ? updateDto.email() : user.getEmail()
+        );
+        updatedUser.setId(user.getId());
+        return updatedUser;
+    }
 
 }
