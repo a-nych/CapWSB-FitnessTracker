@@ -1,5 +1,8 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Interface (API) for modifying operations on {@link Training} entities through the API.
  * Implementing classes are responsible for executing changes within a database transaction,
@@ -24,4 +27,8 @@ public interface TrainingService {
     Training updateTraining(Training training);
 
     void deleteTraining(Long userId);
+
+    List<Training> findTrainingsByUserId(Long userId);
+
+    Optional<Training> getTraining(Long trainingId);
 }

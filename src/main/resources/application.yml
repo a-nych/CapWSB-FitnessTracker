@@ -11,3 +11,18 @@ spring:
       enabled: true
   profiles:
     active: loadInitialData
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: xxx
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+    test-connection: true
